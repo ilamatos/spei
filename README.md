@@ -24,7 +24,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ilamatos/spei">
-    <img src="figures/macrosystems_logo_long (1).png" alt="Logo" width="300" height="80">
+    <img src="figures/LEV1_ingles_branco_300dpi.tif" alt="Logo" width="100" height="80">
   </a>
 
 <h3 align="center">SPEI - Standardized Precipitation Evapotransporation Index</h3>
