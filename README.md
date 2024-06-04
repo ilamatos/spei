@@ -27,7 +27,7 @@
     <img src="figures/macrosystems_logo_long (1).png" alt="Logo" width="300" height="80">
   </a>
 
-<h3 align="center">Leaf xylem implosion safety</h3>
+<h3 align="center">SPEI - Standardized Precipitation Evapotransporation Index</h3>
 
   <p align="center">
    Data and Rcode to reproduce analysis of the manuscript entitled "On  the need to use proper metrics to detect experimental drought treatments - a comment on Keen et al. (2024)"
