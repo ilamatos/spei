@@ -113,12 +113,22 @@ We use the R-package ClimateR (github/mikejohnson51/climateR) to download monthl
 
 To download climate data for this study site we only need to provide: 
 
-* []()Benjamini Y and Hochberg Y (1995) Journal of the Royal Statistical Society Series B
-* []()1.Decimal coordinates for study area: 39.103784, -96.613075;
+* []()1. Decimal coordinates for study area: 39.103784, -96.613075;
 * []()2. Which variables we want to download: pr (monthly precipitation) and pet (potential evapotranspiration);
 * []()3. Start date: 1959-01-01
 * []()4. End date: 2023-12-31
 
+First, we need to use the code below to convert the study area coordinates into a spatial (sf) object
+```sh
+# create a dataframe with study area coordinates
+site_coord <- data.frame(name = "Konza", 
+                     lon = -96.613075, 
+                     lat = 39.103784)
+# convert the dataframe into a sf object
+site_sf <- sf::st_as_sf(site_coord, 
+                       coords = c("lon", "lat"),
+                       crs = 4269) 
+```
 
 
 
