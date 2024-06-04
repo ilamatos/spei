@@ -164,6 +164,8 @@ dt_Konza <- getTerraClim(AOI = site_sf, #Konza prairie coordinates
 ```
 This download may take a while, please be patient!
 
+The code above can be easily modified to download data for multiple points (i.e. multiple experimental sites) or an entire area of interest. For more details, please see ClimateR documentation at https://github.com/mikejohnson51/climateR.
+
 Once we have the climate data, we can use the code below to create the month and year columns
 
 ```sh
