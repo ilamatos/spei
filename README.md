@@ -124,13 +124,29 @@ First, we need to use the code below to convert the study area coordinates into 
 site_coord <- data.frame(name = "Konza", 
                      lon = -96.613075, 
                      lat = 39.103784)
+
 # convert the dataframe into a sf object
 site_sf <- sf::st_as_sf(site_coord, 
                        coords = c("lon", "lat"),
                        crs = 4269) 
 ```
+It is always a good idea to plot the point coordinates into a map to double check if the location is correct
+```sh
+# get the global map
+world <- rnaturalearth::ne_countries(scale = "small",
+                                     returnclass = "sf")
 
-
+# then plot point coordinates in it
+ggplot() +
+  geom_sf(data = world,
+          mapping = aes(geometry = geometry),
+          fill = "white") +
+  geom_sf(data = site_sf,
+          aes(geometry = geometry),
+          size = 3,
+          color = "red") +
+  theme_bw()
+```
 
 
 
