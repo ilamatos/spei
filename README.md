@@ -24,7 +24,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ilamatos/spei">
-    <img src="figures/LEV1_ingles_branco_300dpi.tif" alt="Logo" width="100" height="80">
+    <img src="Figures/LEV1_ingles_branco_300dpi.tif" alt="Logo" width="100" height="80">
   </a>
 
 <h3 align="center">SPEI - Standardized Precipitation Evapotransporation Index</h3>
@@ -148,13 +148,11 @@ ggplot() +
   theme_bw()
 ```
 
-
-
 <!-- FIGURE 1 -->
 <br />
 <div align="left">
-  <a href="https://github.com/ilamatos/xylem_implosion_safety">
-    <img src="figures/Figure_1.png" alt="Logo" width="2500" height="500">
+  <a href="https://github.com/ilamatos/spei">
+    <img src="Figures/globalmap.png" alt="Figure1" width="2500" height="500">
   </a>
 
 <h3 align="left">Figure 1</h3>
