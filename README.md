@@ -112,10 +112,12 @@ In this tutorial, we use climatic water balance data from TerraClimate (https://
 We use the R-package ClimateR (github/mikejohnson51/climateR) to download monthly precipitation and potential evapotranspiration data for the study area of Keen et al. (2024) study, which was conducted at Konza Prairie Biological Station (Kansas, US).
 
 To download climate data for this study site we only need to provide: 
-*[]()1.Decimal coordinates for study area: 39.103784, -96.613075;
-*[]()2. Which variables we want to download: pr (monthly precipitation) and pet (potential evapotranspiration);
-*[]()3. Start date: 1959-01-01
-*[]()4. End date: 2023-12-31
+
+* []()Benjamini Y and Hochberg Y (1995) Journal of the Royal Statistical Society Series B
+* []()1.Decimal coordinates for study area: 39.103784, -96.613075;
+* []()2. Which variables we want to download: pr (monthly precipitation) and pet (potential evapotranspiration);
+* []()3. Start date: 1959-01-01
+* []()4. End date: 2023-12-31
 
 
 
