@@ -304,18 +304,45 @@ Below we can see the lomg-term (1959-2023) SPEI for both control and drougth plo
 <br />
 <div align="left">
   <a href="https://github.com/ilamatos/spei">
-    <img src="Figures/SPEI_final.png" alt="Figure4" width="2500" height="500">
+    <img src="Figures/SPEI_terraclimate.png" alt="Figure4" width="2500" height="500">
   </a>
 
 We see that drought treatments in the experimental drought plots progressed from non-existent (i.e. near normal conditions in 2019 with SPEI > -1.00), to moderate/severe (SPEI between -1.0 and -2.0 during 2020-2022), to extreme (in 2023 with SPEI < -2.0); whereas control plots (which were receiving ambient precipitation) were under moderate (SPEI > 1.0) to extreme (SPEI > 2.0) wet conditions at the beginning of the experiment, and then experienced a natural drought with moderate intensity (i.e. SPEI < -1.0) from mid-2021 onwards.
 
+Finally, we also used the original TerraClimate data to calculate a rainfall seasonality index (S) for the study area. S ranges from zero (no seasonality, with rainfall uniformly distributed throughout the year) to 3.58 (maximum seasonality, with rainfall concentrated in a single month), and is calculated following Feng et al. (2013) as S = D × R/Rmax. Where, D is the relative entropy (i.e., a measure of the concentration of rainfall around the wet season), R is the long-term mean annual rainfall record for the study site, and Rmax is the maximum mean annual rainfall in the dataset (Rmax = 1,373 mm in 1973).
+
+The code below calculates S for the study area.
+
+```sh
+# calculate rainfall seasonality 
+df_map <- dt %>%
+  group_by(year) %>%
+  summarize(ap=sum(pr,na.rm=T)) %>% 
+  summarize(map=mean(ap, na.rm=T), max_ap=max(ap,na.rm=T)) 
+# map is the average mean annual precipitation for the reference period (1959-2023)
+# max_ap is the maximum mean annual precipitation in the long-term record
+
+# calculation of D
+df_mmp <- dt %>% 
+  group_by(month) %>%
+  summarize(mmp=mean(pr,na.rm=T)) 
+p_m <- df_mmp$mmp/df_map$map
+int_pm <- p_m*log((p_m/(1/12)), base=2) 
+D_bar <- sum(int_pm)
+
+# calculation of S
+S <- D_bar*(df_map$map/df_map$max_ap)  
+S
+```
+
+Rainfall seasonality was relatively high (S = 0.14) for the study area, especially when compared to other 101 grasslands sites world-wide where rainfall manipulation experiments have been conducted (median S for those 101 sites was 0.02, ranging from 0.003 to 0.19, Matos et al. 2020b).
 
 <!-- CONTACT -->
 ## Contact
 
 Ilaine Silveira Matos - ilaine.matos@gmail.com
 
-Project Link: [https://github.com/ilamatos/xylem_implosion_safety](https://github.com/ilamatos/xylem_implosion_safety)
+Project Link: [https://github.com/ilamatos/spei](https://github.com/ilamatos/spei)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
