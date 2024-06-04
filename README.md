@@ -69,7 +69,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Recently, Keen et al. (2024) evaluated the combined effect of experimental fire and drought events on the encroachment of tallgrass prairie vegetation. By using passive rainout shelters to impose the drought treatment, they found that moderate drought in combination with fire was not sufficient to reduce biomass production or stem density in an encroaching clonal shrub. However, we noticed that the authors inferred drought based on 50% PPT reduction and on changes in soil moisture between control and drought plots. Because they did not use standardized indices (e.g. standardized precipitation evapotranspiration index, SPEI) to properly detect drought intensity, it is unclear whether their drought plots experienced a real drought and whether their control plots experienced near-average mean annual precipitation throughout the experimental period. We reanalyzed Keen et al. (2024) data using SPEI and found that drought plots were subjected to moderate/severe drought, whereas control plots failed to replicate the near-average conditions of the studied area (i.e. they either experienced ‘too’ dry or ‘too’ wet conditions). Consequently, some of their results require a reinterpretation, as for most of the experimental period they were comparing control plots suffering a moderate natural drought versus drought plots reaching moderate/severe drought intensity . We discuss the importance of standardized climatic indices (such as SPEI) as an informative metric to quantify drought intensity in rainfall manipulative experiments and provide additional guidelines to improve how future rainfall manipulation studies impose and detect drought in treatment and control plots.
+Recently, Keen et al. (2024) evaluated the combined effect of experimental fire and drought events on the encroachment of tallgrass prairie vegetation. By using passive rainout shelters to impose the drought treatment, they found that moderate drought in combination with fire was not sufficient to reduce biomass production or stem density in an encroaching clonal shrub. However, we noticed that the authors inferred drought based on 50% PPT reduction and on changes in soil moisture between control and drought plots. Because they did not use standardized indices (e.g. standardized precipitation evapotranspiration index, SPEI) to properly detect drought intensity, it is unclear whether their drought plots experienced a real drought and whether their control plots experienced near-average mean annual precipitation throughout the experimental period. We reanalyzed Keen et al. (2024) data using SPEI and found that drought plots were subjected to moderate/severe drought, whereas control plots failed to replicate the near-average conditions of the studied area (i.e. they either experienced ‘too’ dry or ‘too’ wet conditions). Consequently, some of their results require a reinterpretation, as for most of the experimental period they were comparing control plots suffering a moderate natural drought versus drought plots reaching moderate/severe drought intensity. In Rosado and Matos (2024), we discuss the importance of standardized climatic indices (such as SPEI) as an informative metric to quantify drought intensity in rainfall manipulative experiments and provide additional guidelines to improve how future rainfall manipulation studies impose and detect drought in treatment and control plots.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -105,6 +105,15 @@ You will need R version 4.3.1 (or greater) and the R-packages listed below insta
 
 <!-- STATISTICAL ANALYSIS -->
 ## Statistical analysis
+
+SPEI is an easy and more reliable metric to compare drought treatments across years and sites. SPEI takes into account the historical precipitation record for each location (Knapp et al., 2017; Slette et al., 2019) and measures the number of standard deviations by which the climatic water balance (precipitation minus potential evapotranspiration) deviates from the historical monthly mean for a specific site (Vicente-Serrano, Beguería, & López-Moreno, 2010). Negative SPEI values indicate drier conditions than the average, while positive SPEI values suggest wetter conditions (see Table below). 
+
+<!-- TABLE 1 -->
+<br />
+<div align="left">
+  <a href="https://github.com/ilamatos/spei">
+    <img src="Figures/Table_SPEI.png" alt="Table1" width="2500" height="500">
+  </a>
 
 To calculate SPEI for a given study area, a historical record of monthly precipitation and potential evapotranspiration is required.
 In this tutorial, we use climatic water balance data from TerraClimate (https://www.climatologylab.org/terraclimate.html), which provides long-term data (1959-present) at a spatial resolution of 2.5 arc minutes (~ 4 km; Abatzoglou, Dobrowski, Parks, & Hegewisch, 2018).
@@ -258,8 +267,48 @@ We can modify the code above (by replacing spei12c$fitted with spei12d$fitted in
 <br />
 <div align="left">
   <a href="https://github.com/ilamatos/spei">
-    <img src="Figures/SPEI_timeseries_drougth.png" alt="Figure2" width="2500" height="500">
+    <img src="Figures/SPEI_timeseries_drought.png" alt="Figure3" width="2500" height="500">
   </a>
+
+Finally, we can also slice the time series data and make SPEI plots for each experimental year.
+For example, the code below allow us to plot SPEI for the control plot in 2022.
+
+```sh
+# Use the window function to slice the time-series for the experimental period (2018-2023)
+ee<-window(spei12c$fitted, start = c(2018,1), end=c(2023,12))
+eec<-as.data.frame(ee)%>%mutate(year = rep(2018:2023, each=12), time = rep(1:12, times = 6))
+glimpse(eec)
+
+## Plot SPEI for the control plot in 2022
+d22<-eec%>%filter(year == "2022")
+d22$cat <- ifelse(d22$x > 0, "neg", "pos")
+
+p2<-ggplot(data = d22, aes(x=time, y=x,  fill = cat, color = cat))+
+  geom_bar (stat="identity") +
+  theme_bw()+
+  #ylim(c(-3.5,3.5))+
+  scale_fill_manual(values=c('blue','red')) +  # classic SPEI look
+  scale_color_manual(values=c('blue','red')) + # classic SPEI look
+  geom_hline(yintercept = 0, color = "black")+
+  scale_y_continuous(limits = c(-3,3), breaks = c(-3, -2, -1, 0, 1, 2, 3))+
+  scale_x_continuous(limits = c(0,13), breaks = seq(0, 13, by = 1), labels = c("", "J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D", ""))+
+  xlab("2022")+ ylab ("SPEI control")+
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_text(hjust = 0)); p2
+```
+Below we can see the lomg-term (1959-2023) SPEI for both control and drougth plots, as well as individual plots showing the monthly SPEI for each experimental year (i.e. 2018-2023).
+
+<!-- FIGURE 4 -->
+<br />
+<div align="left">
+  <a href="https://github.com/ilamatos/spei">
+    <img src="Figures/SPEI_final.png" alt="Figure4" width="2500" height="500">
+  </a>
+
+We see that drought treatments in the experimental drought plots progressed from non-existent (i.e. near normal conditions in 2019 with SPEI > -1.00), to moderate/severe (SPEI between -1.0 and -2.0 during 2020-2022), to extreme (in 2023 with SPEI < -2.0); whereas control plots (which were receiving ambient precipitation) were under moderate (SPEI > 1.0) to extreme (SPEI > 2.0) wet conditions at the beginning of the experiment, and then experienced a natural drought with moderate intensity (i.e. SPEI < -1.0) from mid-2021 onwards.
+
 
 <!-- CONTACT -->
 ## Contact
