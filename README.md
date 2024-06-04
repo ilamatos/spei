@@ -20,13 +20,6 @@
 -->
 
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/ilamatos/spei">
-    <img src="Figures/LEV1_ingles_branco_300dpi.tif" alt="Logo" width="100" height="80">
-  </a>
-
 <h3 align="center">SPEI - Standardized Precipitation Evapotransporation Index</h3>
 
   <p align="center">
