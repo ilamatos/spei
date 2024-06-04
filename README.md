@@ -106,7 +106,7 @@ You will need R version 4.3.1 (or greater) and the R-packages listed below insta
 <!-- STATISTICAL ANALYSIS -->
 ## Statistical analysis
 
-SPEI is an easy and more reliable metric to compare drought treatments across years and sites. SPEI takes into account the historical precipitation record for each location (Knapp et al., 2017; Slette et al., 2019) and measures the number of standard deviations by which the climatic water balance (precipitation minus potential evapotranspiration) deviates from the historical monthly mean for a specific site (Vicente-Serrano, Beguería, & López-Moreno, 2010). Negative SPEI values indicate drier conditions than the average, while positive SPEI values suggest wetter conditions (see Table below). 
+SPEI is an easy and more reliable metric to compare drought treatments across years and sites. SPEI takes into account the historical precipitation record for each location (Slette et al., 2019) and measures the number of standard deviations by which the climatic water balance (precipitation minus potential evapotranspiration) deviates from the historical monthly mean for a specific site (Vicente-Serrano et al., 2010). Negative SPEI values indicate drier conditions than the average, while positive SPEI values suggest wetter conditions (see Table below). 
 
 <!-- TABLE 1 -->
 <br />
@@ -116,7 +116,7 @@ SPEI is an easy and more reliable metric to compare drought treatments across ye
   </a>
 
 To calculate SPEI for a given study area, a historical record of monthly precipitation and potential evapotranspiration is required.
-In this tutorial, we use climatic water balance data from TerraClimate (https://www.climatologylab.org/terraclimate.html), which provides long-term data (1959-present) at a spatial resolution of 2.5 arc minutes (~ 4 km; Abatzoglou, Dobrowski, Parks, & Hegewisch, 2018).
+In this tutorial, we use climatic water balance data from TerraClimate (https://www.climatologylab.org/terraclimate.html), which provides long-term data (1959-present) at a spatial resolution of 2.5 arc minutes (~ 4 km; Abatzoglou et al., 2018).
 
 We use the R-package ClimateR (github/mikejohnson51/climateR) to download monthly precipitation and potential evapotranspiration data for the study area of Keen et al. (2024) study, which was conducted at Konza Prairie Biological Station (Kansas, US).
 
@@ -335,7 +335,7 @@ S <- D_bar*(df_map$map/df_map$max_ap)
 S
 ```
 
-Rainfall seasonality was relatively high (S = 0.14) for the study area, especially when compared to other 101 grasslands sites world-wide where rainfall manipulation experiments have been conducted (median S for those 101 sites was 0.02, ranging from 0.003 to 0.19, Matos et al. 2020b).
+Rainfall seasonality was relatively high (S = 0.14) for the study area, especially when compared to other 101 grasslands sites world-wide where rainfall manipulation experiments have been conducted (median S for those 101 sites was 0.02, ranging from 0.003 to 0.19, Matos et al. 2020).
 
 <!-- CONTACT -->
 ## Contact
@@ -349,22 +349,14 @@ Project Link: [https://github.com/ilamatos/spei](https://github.com/ilamatos/spe
 <!-- REFERENCES -->
 ## References
 
-* []()Benjamini Y and Hochberg Y (1995) Journal of the Royal Statistical Society Series B
-* []()Blackman CJ et al (2010) New Phytologist
-* []()Blackman CJ et al (2018) Annals of Botany
-* []()Brodribb TJ and Holbrook MN (2005) Plant Physiology
-* []()Escheverria A et al (2022) American Journal of Botany
-* []()Hacke UG et al (2001) Oecologia 
-* []()Hacke UG et al (2004) American Journal of Botany
-* []()Jacobson AL et al (2005) Plant Physiology
-* []()Pittermann J et al (2016) Plant Cell and Environment
-* []()Pratt RB and Jacobsen AL (2017)
-* []()R Foundation for Statistical Computing (2023) Plant Cell and Environment
-* []()Sperry JS (2003) International Journal of Plant Sciences
-* []()Sperry JS and Hacke UG (2004) American Journal of Botany
-* []()Sperry JS et al (2006) American Journal of Botany
-* []()Warton DI et al (2011) Methods in Ecology and Evolution
-* []()Zhang YJ et al (2023) New Phytologist
+* []()Abatzoglou et al. (2018) Scientific Data
+* []()Feng et al. (2013) Nature Climate Change
+* []()Keen et al. (20124) Oecologia
+* []() Matos et al. (2020) Global Change Ecology and Biogeography
+* []() Rosado and Matos (2024) Oecologia (in review)
+* []() Slette et al. (2019) Global Change Biology
+* []() Vicente-Serrano et al (2010) Journal of Climate
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
