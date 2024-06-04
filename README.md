@@ -147,7 +147,6 @@ ggplot() +
           color = "red") +
   theme_bw()
 ```
-
 <!-- FIGURE 1 -->
 <br />
 <div align="left">
@@ -155,9 +154,97 @@ ggplot() +
     <img src="Figures/globalmap.png" alt="Figure1" width="2500" height="500">
   </a>
 
-<h3 align="left">Figure 1</h3>
+Next, we use the getTerraClim function from the ClimateR package to download TerraClimate data for the study site
 
+```sh
+dt_Konza <- getTerraClim(AOI = site_sf, #Konza prairie coordinates
+                      varname = c("ppt","pet"), # variables to be downloaded
+                      startDate = "1959-01-01", # start date
+                      endDate  = "2023-12-31") # end date
+```
+This download may take a while, please be patient!
 
+Once we have the climate data, we can use the code below to create the month and year columns
+
+```sh
+dt <- dt_Konza %>% mutate(date = parse_date_time(date, 'ymd')) %>% 
+  mutate(year=year(date), month=month(date))%>%
+  mutate( pet=pet_total*0.1, pr = ppt_total)%>% # rescale variables 
+  select(date,year,month,pet,pr)
+```
+
+Note that some variables (such as pet) need to be rescaled. Please check https://code.earthengine.google.com/dataset/IDAHO_EPSCOR/TERRACLIMATE to see which variables need rescaling and which scale factors to use.
+
+Since we want to calculate SPEI using the precipitation data for both the control and drought plots, we create a new column (pr_drought) to store the montlhy precipitation values for the drought plots.
+
+In  Keen et al., (2024) study, rainout shelters were used to intercepted ~50% of the income annual precipitation from 2018 onwards. Shelters were only temporarily removed during mid-February to mid-March, when vegetation was burned. 
+
+Therefore, we used the code below to create the pr_drought columns, were we halved the monthly precipitation values in the drought plots from Jan 2018 to Dec 2023, without altering precipitation values for Feb-Mar months.
+
+```sh
+# half the monthly precipitation values from 2018-2023
+dt<-dt_Konza%>% mutate(pr_drought = ifelse(year == 2018 | year == 2019 | year == 2020 |
+                                         year == 2021 | year == 2022 | year == 2023, pr/2, pr))
+
+# then, for Feb and Mar months change ppt back to original values
+dt[710,6]<-18.1 # Feb 2018
+dt[711,6]<-38.5 # Mar 2018
+dt[722,6]<-35.3 # Feb 2019
+dt[723,6]<-83.8 # Mar 2019
+dt[734,6]<-18.8 # Feb 2020
+dt[735,6]<-58.6 # Mar 2020
+dt[746,6]<-8.2 # Feb 2021
+dt[747,6]<-91.6 # Mar 2021
+dt[758,6]<-7.6 # Feb 2022
+dt[759,6]<-57.7 # Mar 2022
+dt[770,6]<-27.7 # Feb 2023
+dt[771,6]<-33.2 # Mar 2023
+```
+
+Now, we use the SPEI R package (Vicente-Serrano et al., 2010) to calculate the 12-month derivation of SPEI for both the original (i.e. reflecting conditions in the control plots) and the modified (i.e. reflecting conditions in the drought plots) climate datasets. 
+
+```sh
+# first calculate climate water balance  = precipitation (pr) minus evapotranspiration (pet)
+
+dt$bal <- dt$pr - dt$pet # climate water balance for control plots
+dt$bald <- dt$pr_drought - dt$pet # climate water balance for drought plots
+
+# convert climate data to a time series for convenience
+dt_ts<- ts(dt[,-c(1,2)],start= c(1959,1),end= c(2023, 12), frequency=12)
+
+# calculate 12-months SPEI
+spei12c <- spei(dt_ts[,"bal"],12) # control plots
+spei12d <- spei(dt_ts[,"bald"],12) # drought plots
+```
+Using the code below We can plot the SPEI time-series for the 1959-2023 reference period for the control plots (i.e. original climate dataset)
+
+```sh
+dtc <- spei12c$fitted
+kk <- as.data.frame(dtc)
+kk$time <- as.character(time(dtc))
+kk <- melt(kk, id.vars = "time")
+kk$time <- as.numeric(kk$time)
+kk$na <- as.numeric(ifelse(is.na(kk$x), 0, NA))
+kk$cat <- ifelse(kk$x > 0, "neg", "pos")
+
+p1<-ggplot(kk, aes(.data[["time"]], .data[["x"]],
+                    fill = cat,
+                    color = cat))+
+  geom_bar(stat = "identity")+  
+      scale_fill_manual(values=c('blue','red')) +  # classic SPEI look
+      scale_color_manual(values=c('blue','red')) + # classic SPEI look
+  geom_hline(yintercept = 0, color = "black")+
+  theme_bw()+
+  scale_y_continuous(limits = c(-3, 4), breaks = c(-3, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4))+
+  ylab("12-months SPEI control") +
+  xlab("Time") +
+  theme(
+    legend.position = "none",
+    strip.background = element_blank(),
+    strip.text = element_text(hjust = 0));p1
+```
+
+We can modify the code above and plot the SPEI time-series for the drought plots (see below)
 
 <!-- CONTACT -->
 ## Contact
