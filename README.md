@@ -251,9 +251,15 @@ p1<-ggplot(kk, aes(.data[["time"]], .data[["x"]],
   <a href="https://github.com/ilamatos/spei">
     <img src="Figures/SPEI_timeseries_control.png" alt="Figure2" width="2500" height="500">
   </a>
-  
 
-We can modify the code above and plot the SPEI time-series for the drought plots (see below)
+We can modify the code above (by replacing spei12c$fitted with spei12d$fitted in the first line of code) and then plot the SPEI time-series for the drought plots (see below)
+
+<!-- FIGURE 3 -->
+<br />
+<div align="left">
+  <a href="https://github.com/ilamatos/spei">
+    <img src="Figures/SPEI_timeseries_drougth.png" alt="Figure2" width="2500" height="500">
+  </a>
 
 <!-- CONTACT -->
 ## Contact
